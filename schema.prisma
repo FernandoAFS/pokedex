@@ -1,0 +1,54 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum PokemonType {
+  NORMAL
+  FIRE
+  WATER
+  ELECTRIC
+  GRASS
+  ICE
+  FIGHTING
+  POISON
+  GROUND
+  FLYING
+  PSYCHIC
+  BUG
+  ROCK
+  GHOST
+  DRAGON
+  DARK
+  STEEL
+  FAIRY
+}
+
+model PokemonDetails {
+  pokemonId  String       @id @default(uuid())
+  name       String
+  type1      PokemonType
+  type2      PokemonType?
+  generation Int
+
+  // STATS: TRY TO USE SOME KIND OF NESTING IN A SINGLE TABLE
+  hp      Float
+  attack  Float
+  defense Float
+  spatk   Float
+  spdef   Float
+  speed   Float
+
+  // EACH EVOLUTION BRANCH HAS AN ID FOR EASY FETCHING OF ALL THE BRANCH GIVEN A NAME. THIS IS IMPORTANT FOR SEARCH...
+  evolutionFamilyId String?
+
+  evolvedFromId String?         @unique
+  evolvedFrom   PokemonDetails? @relation("recursiveR", fields: [evolvedFromId], references: [pokemonId])
+  evolvesTo PokemonDetails? @relation("recursiveR")
+
+  @@unique([pokemonId, evolutionFamilyId])
+}
