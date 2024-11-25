@@ -1,6 +1,8 @@
 
 # Pokedex T3 stack
 
+![screenshot](./screenshot.png)
+
 ## How to run:
 
 - Install dependencies with npm: `npm install`

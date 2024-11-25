@@ -1,28 +1,34 @@
+"use client";
 
-'use client'
+import { useState } from "react";
+import {
+  HeaderLayout,
+  BackButton,
+  HomeButton,
+  SearchInput,
+} from "@/components/header";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useDebouncedCallback } from "use-debounce";
 
-import { useState } from 'react'
-import { HeaderLayout, BackButton, HomeButton, SearchInput } from "@/components/header";
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useDebouncedCallback } from 'use-debounce'
-
-const DEBOUNCE_DELAY = 500 // half a second
+const DEBOUNCE_DELAY = 500; // half a second
 
 export const StatefulHeader = () => {
   /**
    * Component that injects nav with context state
    */
-  const [searchItem, setSearchItem] = useState<string | null>(null)
-  const router = useRouter()
+  const [searchItem, setSearchItem] = useState<string | null>(null);
+  const router = useRouter();
   const debounceRedirect = useDebouncedCallback((searchItem: string) => {
-    const params = Object.fromEntries(new URLSearchParams(window.location.search))
+    const params = Object.fromEntries(
+      new URLSearchParams(window.location.search),
+    );
     const newParams = new URLSearchParams({
       ...params,
       search: searchItem,
-    })
-    router.replace(`/?${newParams}`)
-  }, DEBOUNCE_DELAY)
+    });
+    router.replace(`/?${newParams}`);
+  }, DEBOUNCE_DELAY);
 
   return (
     <HeaderLayout
@@ -32,10 +38,10 @@ export const StatefulHeader = () => {
         </Link>
       }
       rightButton={
-        <Link href='/'>
+        <Link href="/">
           <HomeButton />
         </Link>
       }
     />
-  )
-}
+  );
+};
